@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta content='width=device-width, minimum-scale=1.0' name='viewport'/>
+    <meta charset="UTF-8">
+    <title>Global Chat</title>
+    <style>
+        @media (max-width: 600px) {
+          #input {
+            width: 80%;
+          }
+          #form {
+            height: 100px;
+          }
+          .btn {
+            display: none;
+          }
+
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ededed;
+            color: #555;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #header {
+            background-color: #128C7E;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            height: 60px;
+            box-shadow: 0px 1px 5px #999;
+        }
+
+        #header h1 {
+            font-size: 18px;
+        }
+
+        #header button {
+            background-color: transparent;
+            color: #fff;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        #form {
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            height: 70px;
+            box-shadow: 0px -1px 5px #999;
+        }
+
+        #input {
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            flex-grow: 1;
+            margin-right: 12px;
+            border-radius: 20px;
+        }
+
+        #input:focus {
+            outline: none;
+        }
+
+        #form button {
+            background-color: #128C7E;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            font-size: 16px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        #messages {
+            flex-grow: 1;
+            overflow-y: scroll;
+            list-style: none;
+            padding: 0 12px;
+        }
+
+        .message {
+            background-color: #fff;
+            border-radius: 20px;
+            margin-bottom: 12px;
+            padding: 12px;
+            max-width: 60%;
+        }
+
+        .message.sent {
+            background-color: #DCF8C6;
+            align-self: flex-end;
+        }
+
+        .message.received {
+            background-color: #fff;
+            align-self: flex-start;
+        }
+li {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 80%;
+  margin-bottom: 10px;
+  background-color: #fff;
+  float: left;
+}
+
+.my-class {
+  border: 1px solid #fff;
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 80%;
+  margin-bottom: 10px;
+  background-color: #222222;
+  color: white;
+  float: right;
+}
+
+.block {
+    float: left;
+    width: 100%;
+}
+
+.send {
+    float: right;
+    width: 100%;
+}
+
+#input {
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  flex-grow: 1;
+  margin-right: 12px;
+  border-radius: 20px;
+  background-color: #222222;
+  outline: none;
+  width: 60%;
+  font-size: 16px;
+  color: white;
+}
+
+
+.checkbox-wrapper {
+  display: inline-block;
+  position: relative;
+  padding-left: 28px;
+  margin-right: 10px;
+  font-size: 16px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+
+.checkbox-wrapper::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+
+.checkbox-wrapper::after {
+  content: "✔";
+  display: block;
+  position: absolute;
+  top: 1px;
+  left: 5px;
+  font-size: 12px;
+  color: #fff;
+  line-height: 1;
+  opacity: 0;
+  transition: all 0.2s;
+}
+
+
+.checkbox-wrapper label {
+  color: #333;
+}
+label {
+  margin-left: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+
+
+input[type="file"] {
+  display: none;
+}
+
+
+.file-icon {
+  display: inline-block;
+  width: 30px; 
+  height: 30px;
+  background-image: url('https://cdn-icons-png.flaticon.com/512/6209/6209214.png');
+  background-size: cover; 
+  cursor: pointer; 
+}
+
+.file-label {
+  display: inline-block;
+  width: 30px; /
+  height: 30px;
+  margin-right: 10px;
+  background-color: #f0f0f0;
+  border-radius: 5px; 
+  text-align: center; 
+  font-size: 24px; 
+  line-height: 30px; 
+  cursor: pointer; 
+}
+/
+#file-input + .file-label {
+}
+
+.file-label:hover {
+  background-color: #e0e0e0;
+}
+    </style>
+</head>
+<body>
+    <div id="header">
+        <h1>Global Chat</h1>
+    </div>
+    <ul id="messages"><br/></ul>
+    <audio id="notificationSound" src="https://song.nazvonok.ru/song/debe/nezhnoe-sms-krasivoe-nezhnoe-sms.mp3?id=24092"></audio>
+    <form id="form" action="" enctype="multipart/form-data" class="forma">
+        <label for="file-input" class="file-label">
+  <div class="file-icon"></div>
+</label>
+<input type="file" id="file-input" class="file">
+
+        <input id="input" autocomplete="off" /><button class='btn'>Send</button>
+        <label for="muteCheckbox" class='one'>⠀Mute⠀</label>
+      <input type="checkbox" id="muteCheckbox" class='one'/>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+
+        var socket = io();
+      let frme = document.querySelector('.forma')
+      frme.addEventListener('submit', function (e) {
+         e.preventDefault();
+      });
+      
+
+      var messages = document.getElementById('messages');
+      var form = document.getElementById('form');
+      var input = document.getElementById('input');
+      var muteCheckbox = document.getElementById('muteCheckbox');
+      var username = prompt("Enter your username:");
+      const word = new Object();
+      word.key = username
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        var fileInput = document.getElementById('file-input');
+        var file = fileInput.files[0];
+        var fileReader = new FileReader();
+
+        if (file) {
+          fileReader.readAsDataURL(file);
+          fileReader.onload = function () {
+            socket.emit('chat message', { username: username, message: input.value, file: fileReader.result });
+            input.value = '';
+            fileInput.value = null;
+          };
+        } else if (input.value) {
+          socket.emit('chat message', { username: username, message: input.value });
+          input.value = '';
+        }
+      });
+
+      socket.on('chat message', function(data) {
+        const idiv = document.createElement('div');
+        var item = document.createElement('li');
+        if (word.key === data.username) {
+            item.classList.add('my-class');
+            idiv.classList.add('block')
+        } else {
+            idiv.classList.add('send')
+        };
+        item.textContent = data.username + ": " + data.message;
+        idiv.appendChild(item);
+        document.body.appendChild(idiv);
+        messages.appendChild(idiv);
+        if (data.file) {
+          var fileLink = document.createElement('a');
+          fileLink.href = data.file;
+          fileLink.download = "file";
+          fileLink.textContent = "Download file";
+          item.appendChild(fileLink);
+        }
+        window.scrollTo(0, document.body.scrollHeight);
+
+        if (!muteCheckbox.checked) {
+          var notificationSound = document.getElementById('notificationSound');
+          notificationSound.play();
+        }
+      });
+
+    </script>
+  </body>
+</html>
